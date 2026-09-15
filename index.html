@@ -1,0 +1,633 @@
+<title>トークの種</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+  :root{
+    --bg:#FFF7EE;
+    --surface:#FFFFFF;
+    --surface-alt:#FFF1E1;
+    --border:#F0DEC8;
+    --text:#3B2A1F;
+    --text-muted:#8C7862;
+    --accent:#FF7A2E;
+    --accent-dark:#D85F1B;
+    --accent-soft:#FFE3C4;
+    --accent-ink:#7A3B0E;
+    --shadow: 0 14px 30px -14px rgba(59,42,31,0.28);
+
+    --cat-1-tint:#E4EFE1; --cat-1-ink:#4C7A56;
+    --cat-2-tint:#E1EBF3; --cat-2-ink:#3F6E96;
+    --cat-3-tint:#F5E3E7; --cat-3-ink:#A8506C;
+    --cat-4-tint:#F6ECD6; --cat-4-ink:#A9791E;
+    --cat-5-tint:#EFE7DC; --cat-5-ink:#7A5F41;
+    --cat-6-tint:#E7E3F3; --cat-6-ink:#5F4F92;
+    --cat-7-tint:var(--accent-soft); --cat-7-ink:var(--accent-dark);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#1E140F;
+      --surface:#2A1C15;
+      --surface-alt:#33231A;
+      --border:#4A3626;
+      --text:#F6E8D9;
+      --text-muted:#C4A98D;
+      --accent:#FF8A42;
+      --accent-dark:#FFB27A;
+      --accent-soft:#4A2E1C;
+      --accent-ink:#FFD1A8;
+      --shadow: 0 16px 34px -14px rgba(0,0,0,0.55);
+
+      --cat-1-tint:#243024; --cat-1-ink:#9CC7A4;
+      --cat-2-tint:#1F2B34; --cat-2-ink:#8FBBDD;
+      --cat-3-tint:#33232A; --cat-3-ink:#E29FB2;
+      --cat-4-tint:#332A18; --cat-4-ink:#E8C46E;
+      --cat-5-tint:#2C2620; --cat-5-ink:#CBB18F;
+      --cat-6-tint:#282136; --cat-6-ink:#B4A4E0;
+      --cat-7-tint:var(--accent-soft); --cat-7-ink:var(--accent-dark);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1E140F;
+    --surface:#2A1C15;
+    --surface-alt:#33231A;
+    --border:#4A3626;
+    --text:#F6E8D9;
+    --text-muted:#C4A98D;
+    --accent:#FF8A42;
+    --accent-dark:#FFB27A;
+    --accent-soft:#4A2E1C;
+    --accent-ink:#FFD1A8;
+    --shadow: 0 16px 34px -14px rgba(0,0,0,0.55);
+
+    --cat-1-tint:#243024; --cat-1-ink:#9CC7A4;
+    --cat-2-tint:#1F2B34; --cat-2-ink:#8FBBDD;
+    --cat-3-tint:#33232A; --cat-3-ink:#E29FB2;
+    --cat-4-tint:#332A18; --cat-4-ink:#E8C46E;
+    --cat-5-tint:#2C2620; --cat-5-ink:#CBB18F;
+    --cat-6-tint:#282136; --cat-6-ink:#B4A4E0;
+    --cat-7-tint:var(--accent-soft); --cat-7-ink:var(--accent-dark);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ color-scheme: light dark; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Zen Kaku Gothic New","Hiragino Sans","Hiragino Kaku Gothic ProN",sans-serif;
+    padding-inline:20px;
+    padding-block:36px 56px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .app{ max-width:840px; margin:0 auto; }
+
+  .hero{ text-align:center; margin-bottom:34px; }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:13px; font-weight:700; letter-spacing:.06em;
+    color:var(--accent-dark);
+    background:var(--accent-soft);
+    padding:6px 14px; border-radius:999px;
+    margin-bottom:16px;
+  }
+  .eyebrow svg{ width:13px; height:13px; flex:none; }
+  h1{
+    font-family:"Zen Maru Gothic",sans-serif;
+    font-weight:900;
+    font-size:clamp(32px,7vw,46px);
+    margin:0 0 12px;
+    text-wrap:balance;
+    letter-spacing:.01em;
+  }
+  .subtitle{
+    color:var(--text-muted);
+    font-size:15.5px;
+    line-height:1.75;
+    max-width:38em;
+    margin:0 auto;
+    text-wrap:balance;
+  }
+
+  .category-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(148px,1fr));
+    gap:14px;
+  }
+  .cat-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:18px 16px 16px;
+    text-align:left;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    font-family:inherit;
+    color:inherit;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .cat-card:hover{ transform:translateY(-3px); box-shadow:var(--shadow); border-color:transparent; }
+  .cat-card:focus-visible{ outline:3px solid var(--accent); outline-offset:2px; }
+  .cat-badge{
+    width:44px; height:44px; border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px;
+    background:var(--tint);
+  }
+  .cat-name{
+    font-family:"Zen Maru Gothic",sans-serif;
+    font-weight:700;
+    font-size:15.5px;
+    line-height:1.4;
+  }
+  .cat-count{
+    font-size:12.5px;
+    color:var(--text-muted);
+    font-variant-numeric:tabular-nums;
+    margin-top:-6px;
+  }
+
+  .draw-view{ display:flex; flex-direction:column; gap:26px; }
+  .draw-header{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    flex-wrap:wrap;
+  }
+  .back-btn{
+    background:none; border:none; cursor:pointer;
+    font-family:inherit; font-size:14px; font-weight:700;
+    color:var(--text-muted);
+    padding:8px 4px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .back-btn:hover{ color:var(--accent-dark); }
+  .back-btn:focus-visible{ outline:3px solid var(--accent); outline-offset:2px; border-radius:8px; }
+  .draw-meta{
+    display:flex; align-items:center; gap:8px;
+    font-family:"Zen Maru Gothic",sans-serif; font-weight:700; font-size:16px;
+  }
+  .draw-meta .emoji-badge{
+    width:30px; height:30px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:16px; background:var(--tint);
+  }
+  .draw-progress{
+    font-size:13px; color:var(--text-muted);
+    font-variant-numeric:tabular-nums;
+  }
+
+  .progress-track{
+    height:6px; border-radius:999px; background:var(--surface-alt);
+    border:1px solid var(--border); overflow:hidden;
+  }
+  .progress-fill{
+    height:100%; width:0%; background:var(--accent);
+    border-radius:999px; transition:width .4s ease;
+  }
+
+  .deck-stage{
+    position:relative;
+    width:100%;
+    max-width:340px;
+    margin:6px auto 0;
+    aspect-ratio:3/4;
+    perspective:1500px;
+  }
+  .deck-shadow{
+    position:absolute; inset:0;
+    border-radius:24px;
+    background:var(--surface-alt);
+    border:1px solid var(--border);
+  }
+  .deck-shadow.s1{ transform:rotate(5deg) translateY(4px); width:94%; height:94%; left:3%; top:3%; opacity:.75; }
+  .deck-shadow.s2{ transform:rotate(-4deg) translateY(6px); width:97%; height:97%; left:1.5%; top:1.5%; opacity:.9; }
+
+  .card{
+    position:absolute; inset:0;
+    border-radius:24px;
+    transform-style:preserve-3d;
+    transition:transform .55s cubic-bezier(.3,.1,.2,1);
+    cursor:pointer;
+  }
+  .card.flipped{ transform:rotateY(180deg); }
+  .card-face{
+    position:absolute; inset:0;
+    border-radius:24px;
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+    display:flex; flex-direction:column;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .card-back{
+    background:var(--accent-soft);
+    border:1.5px solid var(--accent);
+    align-items:center; justify-content:center;
+    gap:14px;
+  }
+  .card-back-dots{
+    position:absolute; inset:0;
+    background-image:radial-gradient(var(--accent) 1.6px, transparent 1.6px);
+    background-size:22px 22px;
+    opacity:.18;
+  }
+  .card-back-mark{ font-size:52px; position:relative; }
+  .card-back-label{
+    position:relative;
+    font-family:"Zen Maru Gothic",sans-serif; font-weight:700;
+    color:var(--accent-ink); font-size:13.5px; letter-spacing:.04em;
+  }
+  .card-front{
+    background:var(--surface);
+    border:1px solid var(--border);
+    transform:rotateY(180deg);
+    padding:22px;
+    justify-content:space-between;
+  }
+  .card-front-tag{
+    align-self:flex-start;
+    display:flex; align-items:center; gap:7px;
+    background:var(--tint);
+    padding:6px 12px 6px 8px;
+    border-radius:999px;
+    font-family:"Zen Maru Gothic",sans-serif;
+    font-size:12.5px; font-weight:700;
+  }
+  .card-front-tag .em{ font-size:14px; }
+  .card-question{
+    flex:1;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center;
+    font-family:"Zen Maru Gothic",sans-serif;
+    font-weight:700;
+    font-size:clamp(19px,4.6vw,23px);
+    line-height:1.6;
+    text-wrap:balance;
+    padding:10px 2px;
+  }
+  .card-front-foot{
+    align-self:center;
+    font-size:12px; color:var(--text-muted);
+  }
+
+  .deck-actions{
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+  }
+  .btn{
+    font-family:"Zen Maru Gothic",sans-serif;
+    font-weight:700; font-size:16px;
+    border-radius:999px;
+    padding:15px 34px;
+    border:none;
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+  }
+  .btn:focus-visible{ outline:3px solid var(--accent-dark); outline-offset:3px; }
+  .btn-primary{
+    background:var(--accent);
+    color:#2A1608;
+    box-shadow:0 12px 24px -10px rgba(255,122,46,0.55);
+  }
+  .btn-primary:hover{ transform:translateY(-2px); }
+  .btn-primary:disabled{ opacity:.5; cursor:default; transform:none; box-shadow:none; }
+  .btn-ghost{
+    background:none;
+    color:var(--accent-dark);
+    border:1.5px solid var(--accent-soft);
+  }
+  .btn-ghost:hover{ background:var(--accent-soft); }
+  .deck-hint{ font-size:12.5px; color:var(--text-muted); }
+
+  [hidden]{ display:none !important; }
+
+  @media (prefers-reduced-motion: reduce){
+    .card, .cat-card, .btn{ transition:none; }
+  }
+</style>
+
+<div class="app">
+  <header class="hero">
+    <span class="eyebrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg>
+      ご近所トーク
+    </span>
+    <h1>トークの種</h1>
+    <p class="subtitle">カテゴリを選んで、カードを1枚引こう。出てきた質問について、順番に話してみてね。</p>
+  </header>
+
+  <section id="categoryView">
+    <div class="category-grid" id="categoryGrid"></div>
+  </section>
+
+  <section id="drawView" class="draw-view" hidden>
+    <div class="draw-header">
+      <button class="back-btn" id="backBtn" type="button">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        カテゴリに戻る
+      </button>
+      <div class="draw-meta">
+        <span class="emoji-badge" id="drawBadge"></span>
+        <span id="drawTitle"></span>
+      </div>
+      <span class="draw-progress" id="drawProgress"></span>
+    </div>
+
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+    <div class="deck-stage" id="deckStage">
+      <div class="deck-shadow s1"></div>
+      <div class="deck-shadow s2"></div>
+      <div class="card" id="mainCard">
+        <div class="card-face card-back">
+          <div class="card-back-dots"></div>
+          <div class="card-back-mark">🥕</div>
+          <div class="card-back-label">タップして引く</div>
+        </div>
+        <div class="card-face card-front">
+          <span class="card-front-tag" id="frontTag"><span class="em" id="frontEmoji"></span><span id="frontName"></span></span>
+          <p class="card-question" id="cardQuestion"></p>
+          <span class="card-front-foot">じっくり考えて、シェアしてみよう</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="deck-actions">
+      <button class="btn btn-primary" id="drawBtn" type="button">カードを引く</button>
+      <button class="btn btn-ghost" id="reshuffleBtn" type="button" hidden>シャッフルしてもう一度</button>
+      <span class="deck-hint" id="deckHint"></span>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  var categories = [
+    {
+      id:1, key:"cat-1", emoji:"🌱", name:"はじめまして",
+      q:[
+        "最近ハマっていることは何ですか?",
+        "今週いちばん嬉しかったことは?",
+        "自分を一言で表すと?",
+        "今の気分を天気で例えると?",
+        "好きな食べ物ベスト3は?",
+        "休日はいつもどう過ごしていますか?",
+        "最近買ってよかったものは?",
+        "朝型ですか、夜型ですか?その理由は?",
+        "今いちばん行きたい場所はどこですか?",
+        "自分の名前の由来を知っていますか?",
+        "最近いちばん笑ったことは何ですか?",
+        "好きな季節とその理由は?",
+        "今日の自分を10点満点で採点すると?",
+        "最近始めた新しい習慣はありますか?"
+      ]
+    },
+    {
+      id:2, key:"cat-2", emoji:"🎨", name:"好きなこと",
+      q:[
+        "時間を忘れて没頭できることは何ですか?",
+        "好きな映画・ドラマを1つ教えてください",
+        "音楽はよく聴きますか?好きなアーティストは?",
+        "休みの日に絶対やりたいことは?",
+        "コレクションしているものはありますか?",
+        "いちばんお金をかけている趣味は?",
+        "やってみたいけど、まだできていないことは?",
+        "好きな漫画やアニメはありますか?",
+        "カラオケの十八番は?",
+        "インドア派?アウトドア派?",
+        "最近見て面白かった動画は?",
+        "好きなスポーツ、応援しているチームはありますか?",
+        "一日中家にいていいなら何をしますか?",
+        "子供の頃、好きだった遊びは?"
+      ]
+    },
+    {
+      id:3, key:"cat-3", emoji:"💌", name:"恋バナ",
+      q:[
+        "好きな人にどうやって気持ちを伝えるタイプですか?",
+        "友達との距離感で大事にしていることは?",
+        "一目惚れした経験はありますか?",
+        "デートで行きたい場所はどこですか?",
+        "どんな人といると落ち着きますか?",
+        "好きなタイプを一言で言うと?",
+        "友達にいちばん感謝していることは?",
+        "誰かと喧嘩したとき、どうやって仲直りしますか?",
+        "恋人や友達に言われたら嬉しい言葉は?",
+        "連絡はマメな方?のんびりな方?",
+        "これまでで印象に残っているデートは?",
+        "誰かのために頑張ったエピソードはありますか?",
+        "第一印象で人を判断する?それとも時間をかける?",
+        "大切な人に、まだ伝えていない気持ちはありますか?"
+      ]
+    },
+    {
+      id:4, key:"cat-4", emoji:"🚀", name:"仕事と夢",
+      q:[
+        "今の仕事や学校で、やりがいを感じる瞬間は?",
+        "子供の頃なりたかった職業は?",
+        "もし転職するなら何をしたいですか?",
+        "5年後の自分はどうなっていたいですか?",
+        "仕事終わりの楽しみは何ですか?",
+        "これまでで一番大変だった経験は?",
+        "お金を気にしなくていいなら何をしたい?",
+        "尊敬している人は誰ですか?",
+        "今までで一番嬉しかった褒め言葉は?",
+        "得意なことを仕事にできていますか?",
+        "一週間まるごと休みがあったら何をする?",
+        "今、いちばん挑戦してみたいことは?",
+        "理想の働き方はどんな感じですか?",
+        "自分の強みを一つ挙げるとしたら?"
+      ]
+    },
+    {
+      id:5, key:"cat-5", emoji:"📷", name:"懐かしい話",
+      q:[
+        "子供の頃、いちばんの思い出は何ですか?",
+        "学生時代のあだ名は?",
+        "忘れられない旅行のエピソードはありますか?",
+        "初めてのお使い、覚えていますか?",
+        "学生時代、得意科目と苦手科目は何でしたか?",
+        "いちばん仲が良かった友達との思い出は?",
+        "家族との思い出深いエピソードはありますか?",
+        "子供の頃の夢は何でしたか?",
+        "これまでで一番泣いたことは?",
+        "昔よく聴いていた曲は?",
+        "引っ越しや転校の経験はありますか?",
+        "学生時代の部活や習い事は?",
+        "一番怒られた思い出は?",
+        "子供の頃、好きだったおやつは?"
+      ]
+    },
+    {
+      id:6, key:"cat-6", emoji:"🔮", name:"もしも…?",
+      q:[
+        "もし1億円もらえたら何に使いますか?",
+        "もし透明人間になれたら何をしますか?",
+        "もしタイムマシンがあったら、いつの時代に行きたい?",
+        "もし動物に生まれ変わるなら何になりたい?",
+        "もし1日だけ有名人になれるなら、誰になりたい?",
+        "もし無人島に一つだけ持っていけるなら?",
+        "もし24時間だけ超能力が使えるなら、何を選ぶ?",
+        "もし世界中どこでも住めるなら、どこに住みたい?",
+        "もし今日が人生最後の日だったら、何をする?",
+        "もし願いが一つ叶うなら、何を願いますか?",
+        "もし違う人生を歩めるなら、何をしていたい?",
+        "もし今すぐ旅行に行けるなら、どこに行きたい?",
+        "もし芸能人と友達になれるなら、誰がいい?",
+        "もし年を取らないとしたら、何歳で止まりたい?"
+      ]
+    },
+    {
+      id:7, key:"cat-7", emoji:"🥕", name:"ご近所トーク",
+      q:[
+        "今住んでいる街の好きなところは?",
+        "近所のお気に入りのお店はありますか?",
+        "ご近所さんとの交流はありますか?",
+        "引っ越すなら、どんな街に住みたいですか?",
+        "家の中で一番好きな場所はどこですか?",
+        "今の家で一番気に入っているものは?",
+        "近所でおすすめの散歩コースはありますか?",
+        "地域のイベントに参加したことはありますか?",
+        "今住んでいる場所を選んだ理由は?",
+        "ご近所付き合いで大事にしていることは?",
+        "家の近くでよく行くカフェやレストランは?",
+        "引っ越して驚いたことはありますか?",
+        "地元や出身地の自慢できるところは?",
+        "理想の暮らし方はどんな感じですか?"
+      ]
+    }
+  ];
+
+  var categoryGrid = document.getElementById("categoryGrid");
+  var categoryView = document.getElementById("categoryView");
+  var drawView = document.getElementById("drawView");
+  var backBtn = document.getElementById("backBtn");
+  var drawBadge = document.getElementById("drawBadge");
+  var drawTitle = document.getElementById("drawTitle");
+  var drawProgress = document.getElementById("drawProgress");
+  var progressFill = document.getElementById("progressFill");
+  var mainCard = document.getElementById("mainCard");
+  var cardQuestion = document.getElementById("cardQuestion");
+  var frontEmoji = document.getElementById("frontEmoji");
+  var frontName = document.getElementById("frontName");
+  var frontTag = document.getElementById("frontTag");
+  var drawBtn = document.getElementById("drawBtn");
+  var reshuffleBtn = document.getElementById("reshuffleBtn");
+  var deckHint = document.getElementById("deckHint");
+
+  categories.forEach(function(cat){
+    var card = document.createElement("button");
+    card.type = "button";
+    card.className = "cat-card";
+    card.style.setProperty("--tint", "var(--" + cat.key + "-tint)");
+    card.innerHTML =
+      '<span class="cat-badge" style="background:var(--' + cat.key + '-tint)">' + cat.emoji + '</span>' +
+      '<span class="cat-name">' + cat.name + '</span>' +
+      '<span class="cat-count">' + cat.q.length + '問</span>';
+    card.addEventListener("click", function(){ openCategory(cat); });
+    categoryGrid.appendChild(card);
+  });
+
+  var state = null;
+
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function openCategory(cat){
+    state = {
+      cat: cat,
+      order: shuffle(cat.q.map(function(_, i){ return i; })),
+      drawn: 0
+    };
+    drawBadge.textContent = cat.emoji;
+    drawBadge.style.background = "var(--" + cat.key + "-tint)";
+    drawTitle.textContent = cat.name;
+    frontEmoji.textContent = cat.emoji;
+    frontName.textContent = cat.name;
+    frontTag.style.background = "var(--" + cat.key + "-tint)";
+    mainCard.classList.remove("flipped");
+    cardQuestion.textContent = "";
+    drawBtn.hidden = false;
+    drawBtn.disabled = false;
+    drawBtn.textContent = "カードを引く";
+    reshuffleBtn.hidden = true;
+    deckHint.textContent = "";
+    updateProgress();
+    categoryView.hidden = true;
+    drawView.hidden = false;
+    window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+  }
+
+  function updateProgress(){
+    var total = state.cat.q.length;
+    drawProgress.textContent = state.drawn + " / " + total + "枚";
+    progressFill.style.width = Math.round((state.drawn / total) * 100) + "%";
+  }
+
+  function showQuestion(text){
+    cardQuestion.textContent = text;
+  }
+
+  function drawCard(){
+    if (!state || state.drawn >= state.order.length) return;
+    var qIndex = state.order[state.drawn];
+    var text = state.cat.q[qIndex];
+    state.drawn++;
+
+    if (mainCard.classList.contains("flipped")){
+      mainCard.classList.remove("flipped");
+      var handled = false;
+      var onEnd = function(){
+        if (handled) return;
+        handled = true;
+        mainCard.removeEventListener("transitionend", onEnd);
+        showQuestion(text);
+        mainCard.classList.add("flipped");
+      };
+      mainCard.addEventListener("transitionend", onEnd);
+      setTimeout(onEnd, 650);
+    } else {
+      showQuestion(text);
+      mainCard.classList.add("flipped");
+    }
+
+    updateProgress();
+
+    if (state.drawn >= state.order.length){
+      drawBtn.hidden = true;
+      reshuffleBtn.hidden = false;
+      deckHint.textContent = "このカテゴリのカードを全部引いたよ";
+    } else {
+      deckHint.textContent = "";
+    }
+  }
+
+  function reshuffle(){
+    if (!state) return;
+    state.order = shuffle(state.cat.q.map(function(_, i){ return i; }));
+    state.drawn = 0;
+    mainCard.classList.remove("flipped");
+    cardQuestion.textContent = "";
+    drawBtn.hidden = false;
+    drawBtn.disabled = false;
+    reshuffleBtn.hidden = true;
+    deckHint.textContent = "";
+    updateProgress();
+  }
+
+  drawBtn.addEventListener("click", drawCard);
+  mainCard.addEventListener("click", function(){
+    if (!drawBtn.hidden) drawCard();
+  });
+  reshuffleBtn.addEventListener("click", reshuffle);
+  backBtn.addEventListener("click", function(){
+    drawView.hidden = true;
+    categoryView.hidden = false;
+  });
+})();
+</script>
