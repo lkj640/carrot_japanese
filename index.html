@@ -85,7 +85,14 @@
     padding-block:36px 56px;
     -webkit-font-smoothing:antialiased;
   }
-  .app{ max-width:840px; margin:0 auto; }
+  body.draw-mode{
+    padding-block:18px 20px;
+    min-height:100svh;
+    min-height:100dvh;
+    display:flex;
+  }
+  .app{ max-width:840px; margin:0 auto; width:100%; }
+  body.draw-mode .app{ display:flex; flex-direction:column; flex:1; }
 
   .hero{ text-align:center; margin-bottom:34px; }
   .eyebrow{
@@ -161,20 +168,22 @@
     font-variant-numeric:tabular-nums;
   }
 
-  .draw-view{ display:flex; flex-direction:column; gap:26px; }
-  .draw-header{
+  .draw-view{ display:flex; flex-direction:column; gap:14px; flex:1; }
+  .draw-topbar{
     display:flex; align-items:center; justify-content:space-between; gap:12px;
     flex-wrap:wrap;
   }
-  .back-btn{
+  .back-btn-bottom{
     background:none; border:none; cursor:pointer;
-    font-family:inherit; font-size:16px; font-weight:700;
+    font-family:inherit; font-size:15.5px; font-weight:700;
     color:var(--text-muted);
-    padding:8px 4px;
-    display:flex; align-items:center; gap:6px;
+    padding:10px 4px;
+    display:flex; align-items:center; justify-content:center; gap:6px;
+    width:100%;
+    margin-top:auto;
   }
-  .back-btn:hover{ color:var(--accent-dark); }
-  .back-btn:focus-visible{ outline:3px solid var(--accent); outline-offset:2px; border-radius:8px; }
+  .back-btn-bottom:hover{ color:var(--accent-dark); }
+  .back-btn-bottom:focus-visible{ outline:3px solid var(--accent); outline-offset:2px; border-radius:8px; }
   .draw-meta{
     display:flex; align-items:center; gap:8px;
     font-family:"Zen Maru Gothic",sans-serif; font-weight:700; font-size:19px;
@@ -200,9 +209,10 @@
 
   .deck-stage{
     position:relative;
-    width:100%;
-    max-width:380px;
-    margin:6px auto 0;
+    height:min(50vh, 460px);
+    width:auto;
+    max-width:100%;
+    margin:0 auto;
     aspect-ratio:3/4;
     perspective:1500px;
   }
@@ -320,7 +330,7 @@
 </head>
 <body>
 <div class="app">
-  <header class="hero">
+  <header class="hero" id="pageHero">
     <span class="eyebrow">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg>
       ご近所トーク
@@ -334,11 +344,7 @@
   </section>
 
   <section id="drawView" class="draw-view" hidden>
-    <div class="draw-header">
-      <button class="back-btn" id="backBtn" type="button">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        カテゴリに戻る
-      </button>
+    <div class="draw-topbar">
       <div class="draw-meta">
         <span class="emoji-badge" id="drawBadge"></span>
         <span id="drawTitle"></span>
@@ -370,6 +376,11 @@
       <button class="btn btn-ghost" id="reshuffleBtn" type="button" hidden>シャッフルしてもう一度</button>
       <span class="deck-hint" id="deckHint"></span>
     </div>
+
+    <button class="back-btn-bottom" id="backBtn" type="button">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      カテゴリに戻る
+    </button>
   </section>
 </div>
 
@@ -511,6 +522,7 @@
     }
   ];
 
+  var pageHero = document.getElementById("pageHero");
   var categoryGrid = document.getElementById("categoryGrid");
   var categoryView = document.getElementById("categoryView");
   var drawView = document.getElementById("drawView");
@@ -576,6 +588,8 @@
     updateProgress();
     categoryView.hidden = true;
     drawView.hidden = false;
+    pageHero.hidden = true;
+    document.body.classList.add("draw-mode");
     window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
   }
 
@@ -644,6 +658,8 @@
   backBtn.addEventListener("click", function(){
     drawView.hidden = true;
     categoryView.hidden = false;
+    pageHero.hidden = false;
+    document.body.classList.remove("draw-mode");
   });
 })();
 </script>
